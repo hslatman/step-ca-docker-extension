@@ -1,0 +1,20 @@
+services:
+  step-mgr:
+    depends_on:
+      - step-ca # TODO: this will probably change
+    image: ${DESKTOP_PLUGIN_IMAGE}
+
+  step-ca:
+    image: smallstep/step-ca
+    volumes:
+      - "step:/home/step"
+    ports:
+      - 8443:9000
+    environment:
+      # TODO: init of the CA should take some input from user in the 
+      # extension page, if possible. 
+      - "DOCKER_STEPCA_INIT_NAME=EXTCA"
+      - "DOCKER_STEPCA_INIT_DNS_NAMES=localhost,127.0.0.1"
+
+volumes:
+  step:
